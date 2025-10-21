@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustentabilidade Marinha</title>
+    <!-- Importação do Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração do Tailwind para usar a cor Inter e definir cores customizadas -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ocean-blue': '#0077b6',
+                        'sea-green': '#00b4d8',
+                        'coral-red': '#f94144',
+                        'light-wave': '#90e0ef',
+                        'dark-wave': '#03045e',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Importação da fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo para garantir uma rolagem suave */
+        html { scroll-behavior: smooth; }
+        /* Estilos de Card para o conteúdo */
+        .content-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease-in-out;
+        }
+        .content-card:hover {
+            transform: translateY(-4px);
+        }
+        /* Estilo customizado para o botão de Quiz */
+        .quiz-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            color: white;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        .quiz-button:hover {
+            opacity: 0.9;
+        }
+        .quiz-button:active {
+            transform: scale(0.98);
+        }
+        /* Classe para forçar a visibilidade dos containers principais (substitui 'block' ou 'hidden') */
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            /* Usamos 'grid' porque a maioria das seções é um grid de colunas */
+            display: grid; 
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1.5rem; /* Gap padrão do Tailwind (6) */
+        }
+        @media (min-width: 1024px) {
+            #home-section.active {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+            #topics-section.active {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            #dates-section.active, #tips-section.active {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body class="bg-light-wave min-h-screen font-sans">
+
+    <!-- Cabeçalho e Navegação -->
+    <header class="bg-dark-wave shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-3xl font-extrabold text-white">Aqua Saber</h1>
+            <!-- Botões de Navegação (As "abas navs") -->
+            <nav class="mt-3 md:mt-0 space-x-2 sm:space-x-4 flex flex-wrap justify-center">
+                <button onclick="renderSection('home')" class="text-light-wave hover:text-white transition duration-300 px-3 py-1 text-sm sm:text-base font-medium rounded-lg">Início</button>
+                <button onclick="renderSection('topics')" class="text-light-wave hover:text-white transition duration-300 px-3 py-1 text-sm sm:text-base font-medium rounded-lg">Tópicos</button>
+                <button onclick="renderSection('dates')" class="text-light-wave hover:text-white transition duration-300 px-3 py-1 text-sm sm:text-base font-medium rounded-lg">Datas</button>
+                <button onclick="renderSection('tips')" class="text-light-wave hover:text-white transition duration-300 px-3 py-1 text-sm sm:text-base font-medium rounded-lg">Dicas</button>
+                <button onclick="renderSection('news')" class="text-light-wave hover:text-white transition duration-300 px-3 py-1 text-sm sm:text-base font-medium rounded-lg">Notícias</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Área de Conteúdo Principal -->
+    <main id="main-content" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pt-8">
+
+        <!-- 1. SEÇÃO INÍCIO -->
+        <section id="home-section" class="content-section active">
+            <div class="lg:col-span-4 text-center bg-dark-wave text-white p-12 rounded-2xl shadow-xl">
+                <div class="text-8xl mb-6">🌊</div>
+                <h2 class="text-5xl sm:text-6xl font-extrabold mb-4">Oceanos Saudáveis, Futuro Sustentável.</h2>
+                <p class="text-xl sm:text-2xl font-light">Explore os temas cruciais da biologia marinha e do impacto humano para inspirar a ação e a conservação.</p>
+                <button onclick="renderSection('topics')" class="mt-8 quiz-button bg-sea-green hover:bg-ocean-blue">
+                    Começar a Explorar
+                </button>
+            </div>
+
+            <!-- Destaque: Plástico nos Oceanos -->
+            <div class="lg:col-span-2 content-card border-l-4 border-sea-green">
+                <h3 class="text-2xl font-bold text-ocean-blue mb-4">Destaque: Plástico nos Oceanos</h3>
+                <p class="text-gray-700">A poluição plástica ameaça a vida marinha e a saúde humana. Novas pesquisas, como as que exploram <strong>bactérias que comem plástico</strong>, oferecem esperança para a degradação acelerada de <span class="font-mono">PET</span>. Saiba como você pode fazer parte da solução.</p>
+                <button onclick="renderTopicDetail('plastico')" class="mt-4 quiz-button bg-coral-red hover:bg-dark-wave">
+                    Ver Tópico
+                </button>
+            </div>
+
+            <!-- Notícia Ambiental (Resumo) -->
+            <div class="lg:col-span-2 content-card border-l-4 border-sea-green">
+                <h3 class="text-2xl font-bold text-ocean-blue mb-4">Notícia Ambiental</h3>
+                <p class="text-gray-700">Um evento recente de coleta e manejo adequado de lixos plásticos em praias brasileiras (Ilha do Mel, Paraná) recolheu cerca de 11 toneladas de resíduos em um único mutirão...</p>
+                <button onclick="renderSection('news')" class="mt-4 quiz-button bg-sea-green hover:bg-dark-wave">
+                    Ver Notícias
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. SEÇÃO TÓPICOS (Lista de Cards - Renderizada via JS) -->
+        <section id="topics-section" class="content-section"></section>
+
+        <!-- 3. SEÇÃO DETALHE DE TÓPICO/QUIZ (Renderizada via JS) -->
+        <section id="topic-detail-area" class="content-section"></section>
+
+        <!-- 4. SEÇÃO DATAS (HARDCODED) -->
+        <section id="dates-section" class="content-section">
+            <div class="lg:col-span-2 text-center mb-6">
+                <h2 class="text-4xl font-extrabold text-dark-wave mb-4">Datas Importantes</h2>
+                <p class="text-xl text-gray-700">Celebre e aja pela conservação ao longo do ano.</p>
+            </div>
+            
+            <div class="content-card border-l-4 border-sea-green flex items-center justify-between">
+                <div class="text-dark-wave">
+                    <h3 class="text-2xl font-bold">Dia Mundial da Água</h3>
+                    <p class="text-lg font-light text-gray-600">22 de Março</p>
+                </div>
+                <div class="text-4xl">📅</div>
+            </div>
+            <div class="content-card border-l-4 border-sea-green flex items-center justify-between">
+                <div class="text-dark-wave">
+                    <h3 class="text-2xl font-bold">Dia da Terra</h3>
+                    <p class="text-lg font-light text-gray-600">22 de Abril</p>
+                </div>
+                <div class="text-4xl">📅</div>
+            </div>
+            <div class="content-card border-l-4 border-sea-green flex items-center justify-between">
+                <div class="text-dark-wave">
+                    <h3 class="text-2xl font-bold">Dia Mundial dos Oceanos</h3>
+                    <p class="text-lg font-light text-gray-600">08 de Junho</p>
+                </div>
+                <div class="text-4xl">📅</div>
+            </div>
+            <div class="content-card border-l-4 border-sea-green flex items-center justify-between">
+                <div class="text-dark-wave">
+                    <h3 class="text-2xl font-bold">Dia Mundial de Limpeza de Praias</h3>
+                    <p class="text-lg font-light text-gray-600">17 de Setembro</p>
+                </div>
+                <div class="text-4xl">📅</div>
+            </div>
+            <div class="content-card border-l-4 border-sea-green flex items-center justify-between lg:col-span-2">
+                <div class="text-dark-wave">
+                    <h3 class="text-2xl font-bold">Dia do Defensor do Mar (Brasil)</h3>
+                    <p class="text-lg font-light text-gray-600">22 de Julho</p>
+                </div>
+                <div class="text-4xl">📅</div>
+            </div>
+        </section>
+
+        <!-- 5. SEÇÃO DICAS (HARDCODED) -->
+        <section id="tips-section" class="content-section">
+            <div class="lg:col-span-2 text-center mb-6">
+                <h2 class="text-4xl font-extrabold text-dark-wave mb-4">Dicas Ecológicas para o Dia a Dia</h2>
+                <p class="text-xl text-gray-700">Pequenas ações geram grandes mudanças na proteção dos oceanos.</p>
+            </div>
+
+            <div class="content-card border-b-4 border-coral-red">
+                <div class="flex items-center mb-3">
+                    <div class="text-3xl mr-3">🧵</div>
+                    <h3 class="text-2xl font-bold text-ocean-blue">Sacola Ecológica DIY</h3>
+                </div>
+                <p class="text-gray-700">Transforme uma camiseta ou peça de roupa velha em uma sacola ecológica reutilizável. Pesquise por 'DIY sacola de camiseta' para tutoriais simples sem costura!</p>
+            </div>
+
+            <div class="content-card border-b-4 border-coral-red">
+                <div class="flex items-center mb-3">
+                    <div class="text-3xl mr-3">🥤</div>
+                    <h3 class="text-2xl font-bold text-ocean-blue">Menos Plástico</h3>
+                </div>
+                <p class="text-gray-700">Recuse canudos e copos plásticos descartáveis. Leve sempre sua garrafa reutilizável e talheres.</p>
+            </div>
+
+            <div class="content-card border-b-4 border-coral-red">
+                <div class="flex items-center mb-3">
+                    <div class="text-3xl mr-3">🐟</div>
+                    <h3 class="text-2xl font-bold text-ocean-blue">Compras Locais e Sustentáveis</h3>
+                </div>
+                <p class="text-gray-700">Prefira peixes e frutos do mar certificados como sustentáveis, evitando espécies ameaçadas pela sobrepesca.</p>
+            </div>
+
+            <div class="content-card border-b-4 border-coral-red">
+                <div class="flex items-center mb-3">
+                    <div class="text-3xl mr-3">🚿</div>
+                    <h3 class="text-2xl font-bold text-ocean-blue">Economia de Água</h3>
+                </div>
+                <p class="text-gray-700">Tome banhos mais curtos e reaproveite a água da máquina de lavar para limpar pisos ou calçadas.</p>
+            </div>
+        </section>
+
+        <!-- 6. SEÇÃO NOTÍCIAS (HARDCODED) -->
+        <section id="news-section" class="content-section">
+            <div class="text-center mb-6">
+                <h2 class="text-4xl font-extrabold text-dark-wave mb-4">Notícias e Eventos Ambientais</h2>
+                <p class="text-xl text-gray-700">Fique por dentro das últimas ações e descobertas.</p>
+            </div>
+
+            <div class="content-card border-l-8 border-ocean-blue">
+                <h3 class="text-3xl font-bold text-dark-wave mb-2">Mutirão de Limpeza das Praias da Ilha do Mel</h3>
+                <p class="text-sm text-gray-500 mb-3">Fonte: Portos do Paraná | Data: Outubro/2025 (Exemplo)</p>
+                <p class="text-gray-700 mb-4">Um evento recente de coleta e manejo adequado de lixos plásticos em praias brasileiras (Ilha do Mel, Paraná) recolheu cerca de 11 toneladas de resíduos em um único mutirão. Isso demonstra a urgência da poluição e a importância da mobilização cívica para a limpeza costeira e o descarte correto.</p>
+                <a href="https://www.portosdoparana.pr.gov.br/Noticia/Mutirao-de-Limpeza-das-Praias-da-Ilha-do-Mel-recolhe-quase-11-toneladas-de-residuos" target="_blank" class="text-sea-green hover:underline font-semibold">
+                    Ler Notícia Completa (Link Externo) <span class="ml-1">↗</span>
+                </a>
+            </div>
+
+            <div class="content-card border-l-8 border-ocean-blue">
+                <h3 class="text-3xl font-bold text-dark-wave mb-2">A Resistência dos Manguezais</h3>
+                <p class="text-sm text-gray-500 mb-3">Fonte: National Geographic Brasil | Data: Julho/2025 (Exemplo)</p>
+                <p class="text-gray-700 mb-4">Manguezais, um ecossistema que resiste a tsunamis e combate as mudanças climáticas, estão desaparecendo. Sua importância reside na estabilização da linha costeira, atuando como berçário de vida marinha e absorvendo grandes quantidades de dióxido de carbono (<span class="font-mono">CO₂</span>).</p>
+                <a href="https://www.nationalgeographicbrasil.com/meio-ambiente/2025/07/um-ecossistema-que-resiste-a-tsunamis-e-combate-a-mudanca-climatica-por-que-ele-esta-desaparecendo" target="_blank" class="text-sea-green hover:underline font-semibold">
+                    Ler Notícia Completa (Link Externo) <span class="ml-1">↗</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Container para a mensagem de feedback (ex: Quiz) -->
+    <div id="feedback-message" class="fixed bottom-4 right-4 bg-dark-wave text-white px-4 py-3 rounded-xl shadow-2xl hidden transition-all duration-300 z-50"></div>
+
+    <script>
+        // Variável global que contém Tópicos e Quiz
+        const siteContent = {
+            topics: [
+                {
+                    id: 'corais',
+                    title: 'Branqueamento dos Corais',
+                    icon: '🐠',
+                    content: `
+                        <p class="mb-4 text-gray-700">O branqueamento dos corais ocorre quando os corais ficam estressados por mudanças nas condições como temperatura, luz ou nutrientes. Em resposta, eles expelem as algas simbióticas (zooxantelas) que vivem em seus tecidos, o que lhes dá a sua cor. Sem as algas, o tecido do coral se torna transparente, revelando seu esqueleto branco. Isso não significa que o coral morreu, mas ele está sob grande estresse. O aumento da temperatura da água, impulsionado pelas mudanças climáticas, é a principal causa.</p>
+                        <p class="text-gray-700">A acidificação dos oceanos, outro problema ligado ao aumento de dióxido de carbono (<span class="font-mono">CO₂</span>) na atmosfera, também prejudica a capacidade dos corais de construir seus esqueletos.</p>
+                    `,
+                    quiz: [
+                        { question: "Qual é a principal causa do Branqueamento dos Corais?", options: ["Ataque de predadores", "Aumento da temperatura da água", "Poluição sonora", "Excesso de nutrientes"], answer: 1 },
+                        { question: "O que o coral expele durante o branqueamento?", options: ["O seu esqueleto", "As algas zooxantelas", "Poli-sólidos", "Água doce"], answer: 1 }
+                    ]
+                },
+                {
+                    id: 'magnificacao',
+                    title: 'Magnificação Trófica',
+                    icon: '🧪',
+                    content: `
+                        <p class="mb-4 text-gray-700">A Magnificação Trófica, ou Bioacumulação, é o aumento da concentração de substâncias tóxicas (como mercúrio ou microplásticos) à medida que se avança nos níveis da cadeia alimentar. Essa concentração é máxima nos predadores de topo (como atuns e tubarões).</p>
+                        <p class="text-gray-700">Um exemplo notório é o mercúrio na cadeia alimentar marinha, que pode causar danos neurológicos em humanos.</p>
+                    `,
+                    quiz: [
+                        { question: "Onde a concentração de um poluente bioacumulativo é maior?", options: ["Nos produtores (algas)", "Nos consumidores primários", "Nos predadores de topo", "Na água do mar"], answer: 2 }
+                    ]
+                },
+                {
+                    id: 'acidificacao',
+                    title: 'Acidificação dos Oceanos',
+                    icon: '📉',
+                    content: `
+                        <p class="mb-4 text-gray-700">A Acidificação dos Oceanos ocorre quando o oceano absorve o excesso de dióxido de carbono (<span class="font-mono">CO₂</span>) da atmosfera. Isso é devastador para organismos com conchas e esqueletos de carbonato de cálcio, como ostras, mariscos e corais, pois a acidez impede que eles construam e mantenham essas estruturas vitais.</p>
+                    `,
+                    quiz: [
+                        { question: "O que o CO₂ forma ao se dissolver na água do mar, causando acidificação?", options: ["Ácido sulfúrico", "Gás metano", "Ácido carbônico", "Hidróxido de sódio"], answer: 2 }
+                    ]
+                },
+                {
+                    id: 'eutrofizacao',
+                    title: 'Eutrofização',
+                    icon: '🦠',
+                    content: `
+                        <p class="mb-4 text-gray-700">A Eutrofização é o enriquecimento de um corpo d'água com nutrientes, especialmente nitrogênio (<span class="font-mono">N</span>) e fósforo (<span class="font-mono">P</span>). O excesso provoca o crescimento descontrolado de algas e, quando elas morrem, o processo consome grandes quantidades de oxigênio dissolvido, criando "zonas mortas".</p>
+                    `,
+                    quiz: [
+                        { question: "O que é formado na água devido à Eutrofização, que causa a morte de peixes?", options: ["Zonas de alta luminosidade", "Zonas mortas (com pouco ou nenhum O₂)", "Água salgada", "Sedimento"], answer: 1 }
+                    ]
+                },
+                {
+                    id: 'algas',
+                    title: 'Importância das Algas',
+                    icon: '🌿',
+                    content: `
+                        <p class="mb-4 text-gray-700">As algas, especialmente o fitoplâncton, são responsáveis por produzir cerca de 50% a 80% do oxigênio (<span class="font-mono">O₂</span>) que respiramos na Terra através da fotossíntese. Elas são a base das cadeias alimentares marinhas.</p>
+                    `,
+                    quiz: [
+                        { question: "Qual a principal contribuição das algas para a atmosfera terrestre?", options: ["Absorção de metano", "Produção da maior parte do oxigênio", "Geração de calor", "Formação de nuvens"], answer: 1 }
+                    ]
+                },
+                {
+                    id: 'plastico',
+                    title: 'Plástico e Degradação',
+                    icon: '🗑️',
+                    content: `
+                        <p class="mb-4 text-gray-700">Milhões de toneladas de plástico entram no mar anualmente. Os plásticos se degradam em microplásticos, entrando na cadeia alimentar (Magnificação Trófica).</p>
+                        <p class="mb-4 text-gray-700"><strong>Novos Estudos:</strong> Pesquisas apontam para <strong>bactérias que se alimentam de plástico</strong>, como a bactéria *Ideonella sakaiensis* que pode digerir o <span class="font-mono">PET</span>. Estas enzimas podem ser a chave para acelerar a degradação de resíduos plásticos.</p>
+                    `,
+                    quiz: [
+                        { question: "Qual é uma solução biológica promissora para a degradação do plástico?", options: ["Filtros de carbono", "Bactérias que se alimentam de plástico", "Incineradores subaquáticos", "Raio laser de alta frequência"], answer: 1 }
+                    ]
+                },
+                {
+                    id: 'sobrepesca',
+                    title: 'Sobrepesca',
+                    icon: '🎣',
+                    content: `
+                        <p class="mb-4 text-gray-700">A Sobrepesca refere-se à captura de peixes a uma taxa superior à capacidade de recuperação natural de uma população. Isso desestabiliza ecossistemas inteiros e ameaça a segurança alimentar global.</p>
+                    `,
+                    quiz: [
+                        { question: "Qual é o principal problema causado pela sobrepesca?", options: ["Aumento da temperatura da água", "Diminuição das populações de peixes a ponto de não se recuperarem", "Acúmulo de salinidade", "Aumento da acidez"], answer: 1 }
+                    ]
+                },
+                {
+                    id: 'ameacadas',
+                    title: 'Espécies Aquáticas Ameaçadas de Extinção',
+                    icon: '🚨',
+                    content: `
+                        <p class="mb-4 text-gray-700">Muitas espécies aquáticas estão classificadas como ameaçadas devido à combinação de sobrepesca, perda de habitat e poluição. A conservação eficaz exige a criação de áreas marinhas protegidas e a regulamentação estrita da pesca.</p>
+                    `,
+                    quiz: [
+                        { question: "Qual fator NÃO contribui para a extinção de espécies marinhas?", options: ["Perda de habitat", "Sobrepesca", "Ondas de rádio", "Poluição"], answer: 2 }
+                    ]
+                },
+                {
+                    id: 'agua_brasil',
+                    title: 'Novas Ideias para o Tratamento da Água no Brasil',
+                    icon: '💧',
+                    content: `
+                        <p class="mb-4 text-gray-700">O Brasil enfrenta desafios no saneamento básico. Novas abordagens incluem o uso de jardins filtrantes (wetlands construídos) para tratar águas cinzas e a aplicação de sensores e inteligência artificial para monitorar a qualidade da água em tempo real.</p>
+                    `,
+                    quiz: [
+                        { question: "Qual nova ideia para tratamento de água se baseia em processos naturais para filtragem?", options: ["Desinfecção por ozônio", "Jardins filtrantes (wetlands)", "Filtros de areia química", "Esgoto a céu aberto"], answer: 1 }
+                    ]
+                }
+            ],
+        };
+
+        // Referência às seções
+        const sections = {
+            home: document.getElementById('home-section'),
+            topics: document.getElementById('topics-section'),
+            detail: document.getElementById('topic-detail-area'),
+            dates: document.getElementById('dates-section'),
+            tips: document.getElementById('tips-section'),
+            news: document.getElementById('news-section'),
+        };
+        const feedbackMessage = document.getElementById('feedback-message');
+        let currentQuiz = null;
+
+        /**
+         * Oculta todas as seções e ativa a seção desejada.
+         * Esta é a função que é chamada pelos botões de navegação.
+         * @param {string} sectionId - ID da seção a ser ativada ('home', 'topics', 'dates', 'tips', 'news').
+         */
+        function renderSection(sectionId) {
+            currentQuiz = null; // Limpa o estado do quiz ao mudar de seção
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Sobe a página ao mudar de seção
+            
+            // Oculta todas as seções, incluindo o detalhe do tópico
+            Object.values(sections).forEach(section => {
+                if (section) {
+                    section.classList.remove('active');
+                }
+            });
+
+            // Ativa a seção solicitada
+            const targetSection = sections[sectionId];
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Apenas para 'topics', precisamos gerar dinamicamente a lista de cards
+            if (sectionId === 'topics') {
+                renderTopicsList();
+            }
+        }
+
+        /**
+         * Renderiza a lista de cards de tópicos na seção 'topics-section'.
+         */
+        function renderTopicsList() {
+            sections.topics.innerHTML = siteContent.topics.map(topic => `
+                <div onclick="renderTopicDetail('${topic.id}')" class="content-card bg-white cursor-pointer border-b-4 border-sea-green hover:border-ocean-blue">
+                    <div class="text-5xl mb-3">${topic.icon}</div>
+                    <h2 class="text-xl font-bold text-dark-wave mb-2">${topic.title}</h2>
+                    <p class="text-gray-600 text-sm">Clique para ver a explicação detalhada e o quiz!</p>
+                </div>
+            `).join('');
+        }
+
+        /**
+         * Renderiza um tópico específico com conteúdo detalhado e quiz.
+         * @param {string} topicId - ID do tópico a ser renderizado.
+         */
+        function renderTopicDetail(topicId) {
+            const topic = siteContent.topics.find(t => t.id === topicId);
+            if (!topic) {
+                sections.detail.innerHTML = '<div class="lg:col-span-4 text-center p-8 bg-coral-red/10 rounded-xl">Tópico não encontrado.</div>';
+                return;
+            }
+
+            // Esconde todas as seções e mostra apenas a de detalhe
+            Object.values(sections).forEach(section => {
+                if (section) {
+                    section.classList.remove('active');
+                }
+            });
+            sections.detail.classList.add('active');
+
+
+            sections.detail.innerHTML = `
+                <div class="content-card lg:col-span-4 border-l-8 border-ocean-blue">
+                    <button onclick="renderSection('topics')" class="text-sm text-sea-green hover:underline mb-4 flex items-center">
+                        <span class="mr-1">←</span> Voltar para Tópicos
+                    </button>
+                    <div class="flex items-center mb-4">
+                        <div class="text-6xl mr-4">${topic.icon}</div>
+                        <h2 class="text-4xl font-extrabold text-dark-wave">${topic.title}</h2>
+                    </div>
+                    
+                    <div class="text-base leading-relaxed mb-6">${topic.content}</div>
+                    
+                    ${generateQuiz(topic.quiz)}
+                </div>
+            `;
+        }
+        
+        /**
+         * Exibe uma mensagem de feedback temporária (ex: acerto/erro no quiz).
+         * @param {string} message - A mensagem a ser exibida.
+         * @param {string} type - 'success' ou 'error'.
+         */
+        function showFeedback(message, type) {
+            feedbackMessage.textContent = message;
+            feedbackMessage.classList.remove('hidden', 'bg-dark-wave', 'bg-coral-red', 'bg-green-600');
+            
+            if (type === 'success') {
+                feedbackMessage.classList.add('bg-green-600');
+            } else if (type === 'error') {
+                feedbackMessage.classList.add('bg-coral-red');
+            } else {
+                feedbackMessage.classList.add('bg-dark-wave');
+            }
+
+            // Exibir e esconder após 3 segundos
+            setTimeout(() => {
+                feedbackMessage.classList.add('hidden');
+            }, 3000);
+        }
+
+        /**
+         * Gera o HTML do Quiz para um tópico.
+         * @param {Array<Object>} quizData - Array de perguntas e respostas.
+         * @returns {string} HTML do Quiz.
+         */
+        function generateQuiz(quizData) {
+            currentQuiz = quizData; // Armazena o quiz
+            let quizHTML = '<div id="current-quiz" class="mt-8 pt-6 border-t border-sea-green">';
+            quizHTML += '<h3 class="text-2xl font-bold text-ocean-blue mb-6">Teste Seus Conhecimentos!</h3>';
+
+            quizData.forEach((item, index) => {
+                quizHTML += `
+                    <div class="mb-6 p-4 border border-light-wave rounded-xl bg-gray-50 shadow-md">
+                        <p class="font-semibold text-lg text-dark-wave mb-3">Q${index + 1}: ${item.question}</p>
+                        <div id="options-q${index}">
+                `;
+                item.options.forEach((option, optionIndex) => {
+                    quizHTML += `
+                        <div class="flex items-center mb-2">
+                            <input type="radio" id="q${index}o${optionIndex}" name="quiz-q${index}" value="${optionIndex}" class="w-4 h-4 text-sea-green focus:ring-sea-green checked:bg-sea-green">
+                            <label for="q${index}o${optionIndex}" class="ml-3 text-gray-700">${option}</label>
+                        </div>
+                    `;
+                });
+                quizHTML += '</div></div>';
+            });
+
+            quizHTML += `<button onclick="checkQuizAnswers()" class="quiz-button bg-ocean-blue hover:bg-dark-wave w-full mt-4">Verificar Respostas</button></div>`;
+            return quizHTML;
+        }
+
+        /**
+         * Verifica as respostas do quiz atual.
+         */
+        function checkQuizAnswers() {
+            if (!currentQuiz) return;
+
+            let score = 0;
+            const totalQuestions = currentQuiz.length;
+
+            currentQuiz.forEach((item, index) => {
+                const selectedOption = document.querySelector(`input[name="quiz-q${index}"]:checked`);
+                const optionsContainer = document.getElementById(`options-q${index}`);
+
+                // Limpa cores anteriores
+                optionsContainer.querySelectorAll('label').forEach(label => {
+                    label.classList.remove('text-green-600', 'font-bold', 'text-coral-red');
+                });
+
+                // Marca a opção correta
+                const correctLabel = optionsContainer.querySelector(`label[for="q${index}o${item.answer}"]`);
+                if (correctLabel) {
+                    correctLabel.classList.add('text-green-600', 'font-bold');
+                }
+
+                if (selectedOption) {
+                    const selectedIndex = parseInt(selectedOption.value);
+                    if (selectedIndex === item.answer) {
+                        score++;
+                    } else {
+                        // Marca a opção incorreta selecionada
+                        const incorrectLabel = optionsContainer.querySelector(`label[for="q${index}o${selectedIndex}"]`);
+                        if (incorrectLabel) {
+                            incorrectLabel.classList.add('text-coral-red');
+                        }
+                    }
+                }
+            });
+
+            const percentage = (score / totalQuestions) * 100;
+            const message = `Você acertou ${score} de ${totalQuestions} perguntas (${percentage.toFixed(0)}%).`;
+
+            if (percentage === 100) {
+                showFeedback(message + " Parabéns, excelente domínio!", 'success');
+            } else if (percentage >= 50) {
+                showFeedback(message + " Bom trabalho, continue estudando!", 'success');
+            } else {
+                showFeedback(message + " Revise o conteúdo para melhorar seu placar.", 'error');
+            }
+        }
+
+        // Renderiza a página inicial ao carregar (garantindo que só a home esteja visível)
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSection('home');
+        });
+    </script>
+
+</body>
+</html>
+
